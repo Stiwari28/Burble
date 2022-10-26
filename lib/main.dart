@@ -1,34 +1,36 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:burble/loginpage.dart';
+import 'package:burble/signuppage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
+    home: SplashScreen(duration: 2, goToPage: WelcomePage()),
+  ));
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class SplashScreen extends StatefulWidget {
+  int duration = 0;
+  Widget goToPage;
 
-  // This widget is the root of your application.
+  SplashScreen({required this.goToPage, required this.duration});
+
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const SplashScreen(),
-    );
-  }
+  State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class SplashScreen extends StatelessWidget {
-  const SplashScreen({Key? key}) : super(key: key);
-
+class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
+    Future.delayed(Duration(seconds: this.widget.duration), () {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => this.widget.goToPage));
+    });
+
     return AnimatedSplashScreen(
         splash: Column(children: [
           Image.asset(
@@ -37,36 +39,35 @@ class SplashScreen extends StatelessWidget {
             height: 300,
           ),
         ]),
-        backgroundColor: Color.fromARGB(255, 95, 94, 94),
-        nextScreen: LoginPage(),
-        splashIconSize: 400);
+        backgroundColor: Color.fromARGB(255, 180, 201, 219),
+        nextScreen: WelcomePage(),
+        splashIconSize: 380);
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  void _incrementCounter() {
-    setState(() {});
-  }
+class WelcomePage extends StatelessWidget {
+  const WelcomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-        ),
+    return Container(
+      decoration: BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage('assets/mainpage.png'), fit: BoxFit.cover)),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: Stack(children: [
+          Container(
+            padding: EdgeInsets.only(left: 30, top: 120),
+            child: Text(
+              'Welcome to \nBurble',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 50,
+                  fontWeight: FontWeight.bold),
+            ),
+          )
+        ]),
       ),
     );
   }
