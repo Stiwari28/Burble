@@ -1,11 +1,8 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:animated_splash_screen/animated_splash_screen.dart';
-import 'package:burble/loginpage.dart';
-import 'package:burble/signuppage.dart';
 import 'package:burble/welcomepage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 void main() {
   runApp(MaterialApp(

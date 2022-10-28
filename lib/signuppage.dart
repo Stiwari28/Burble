@@ -21,13 +21,13 @@ class _SignUpPageState extends State<SignUpPage> {
         backgroundColor: Colors.transparent,
         body: Stack(children: [
           Container(
-            padding: EdgeInsets.only(left: 30, top: 340),
+            padding: EdgeInsets.only(left: 20, top: 150),
             child: Text(
-              'Easily Connect with Anyone',
+              'Welcome \nBack',
               style: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-              ),
+                  color: Colors.white,
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold),
             ),
           ),
           Container(
@@ -57,8 +57,9 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(left: 20, top: 50),
+            margin: EdgeInsets.only(left: 20, top: 20),
             child: FloatingActionButton(
+              mini: true,
               onPressed: () {
                 Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) => WelcomePage()));

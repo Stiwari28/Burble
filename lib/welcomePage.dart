@@ -44,45 +44,54 @@ class WelcomePage extends StatelessWidget {
               style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(Colors.white),
                   padding: MaterialStateProperty.all(const EdgeInsets.all(10)),
-                  elevation: MaterialStateProperty.all(15),
+                  shadowColor: MaterialStateProperty.all(Colors.black),
+                  elevation: MaterialStateProperty.all(10),
                   minimumSize: MaterialStateProperty.all(const Size(250, 40)),
                   shape: MaterialStateProperty.all(
                     RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
+                      borderRadius: BorderRadius.circular(15),
                     ),
                   )),
               child: Text(
                 'Log In',
                 style: TextStyle(
-                    color: Color.fromARGB(255, 10, 55, 93),
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold),
+                  color: Color.fromARGB(255, 10, 55, 93),
+                  fontSize: 15.0,
+                ),
               ),
             ),
           ),
           Container(
-            margin: EdgeInsets.only(left: 50, top: 580),
+            margin: EdgeInsets.only(left: 50, top: 560),
             child: ElevatedButton(
               onPressed: () {
                 Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) => SignUpPage()));
               },
               style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.white),
+                  backgroundColor:
+                      MaterialStateProperty.all(Colors.transparent),
+                  side: MaterialStateProperty.all(
+                    const BorderSide(
+                      color: Colors.white,
+                      width: 2,
+                    ),
+                  ),
                   padding: MaterialStateProperty.all(const EdgeInsets.all(10)),
-                  shadowColor: MaterialStateProperty.all(Colors.grey),
+                  shadowColor: MaterialStateProperty.all(Colors.black),
+                  elevation: MaterialStateProperty.all(10),
                   minimumSize: MaterialStateProperty.all(const Size(250, 40)),
                   shape: MaterialStateProperty.all(
                     RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
+                      borderRadius: BorderRadius.circular(15),
                     ),
                   )),
               child: Text(
                 'Sign Up',
                 style: TextStyle(
-                    color: Color.fromARGB(255, 10, 55, 93),
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold),
+                  color: Colors.white,
+                  fontSize: 15.0,
+                ),
               ),
             ),
           ),
