@@ -2,22 +2,22 @@ import 'package:burble/signuppage.dart';
 import 'package:burble/welcomepage.dart';
 import 'package:flutter/material.dart';
 
-import 'forgetPasswordPage.dart';
+import 'loginpage.dart';
 
-class LoginPage extends StatefulWidget {
-  LoginPage({Key? key}) : super(key: key);
+class ForgetPassword extends StatefulWidget {
+  ForgetPassword({Key? key}) : super(key: key);
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<ForgetPassword> createState() => _ForgetPassword();
 }
 
-class _LoginPageState extends State<LoginPage> {
-  TextEditingController nameController = TextEditingController();
+class _ForgetPassword extends State<ForgetPassword> {
+  TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
   void _clearTextField() {
     // Clear everything in the text field
-    nameController.clear();
+    emailController.clear();
     // Call setState to update the UI
     setState(() {});
   }
@@ -34,7 +34,7 @@ class _LoginPageState extends State<LoginPage> {
           Container(
             padding: EdgeInsets.only(left: 20, top: 150),
             child: Text(
-              'Create \nAccount',
+              'Recover \n Your \nAccount',
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 30,
@@ -55,10 +55,10 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(left: 10, top: 320),
+            margin: EdgeInsets.only(left: 10, top: 380),
             padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
             child: TextField(
-              controller: nameController,
+              controller: emailController,
               onChanged: (value) {
                 // Call setState to update the UI
                 setState(() {});
@@ -66,10 +66,10 @@ class _LoginPageState extends State<LoginPage> {
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.fromLTRB(0, 5, 10, 5),
                 prefixIcon: Icon(
-                  Icons.person,
+                  Icons.email,
                   color: Color.fromARGB(255, 10, 55, 93),
                 ),
-                suffixIcon: nameController.text.isEmpty
+                suffixIcon: emailController.text.isEmpty
                     ? null // Show nothing if the text field is empty
                     : IconButton(
                         icon: const Icon(Icons.clear),
@@ -85,53 +85,9 @@ class _LoginPageState extends State<LoginPage> {
                   borderSide: BorderSide(
                       width: 2, color: Color.fromARGB(255, 6, 38, 64)),
                 ),
-                labelText: 'User Name',
+                labelText: 'Enter your email',
                 labelStyle: TextStyle(
                   color: Color.fromARGB(255, 6, 38, 64),
-                ),
-              ),
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.only(left: 10, top: 380),
-            padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-            child: TextField(
-              obscureText: true,
-              controller: passwordController,
-              decoration: InputDecoration(
-                contentPadding: EdgeInsets.fromLTRB(0, 5, 10, 5),
-                prefixIcon: Icon(
-                  Icons.lock,
-                  color: Color.fromARGB(255, 10, 55, 93),
-                ),
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Color.fromARGB(255, 10, 55, 93),
-                    width: 1.0,
-                  ),
-                ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                      width: 2, color: Color.fromARGB(255, 6, 38, 64)),
-                ),
-                labelText: 'Password',
-                labelStyle: TextStyle(
-                  color: Color.fromARGB(255, 6, 38, 64),
-                ),
-              ),
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.only(left: 200, top: 440),
-            child: TextButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => ForgetPassword()));
-              },
-              child: const Text(
-                'Forgot Password?',
-                style: TextStyle(
-                  color: Color.fromARGB(255, 36, 98, 149),
                 ),
               ),
             ),
@@ -139,10 +95,7 @@ class _LoginPageState extends State<LoginPage> {
           Container(
             margin: EdgeInsets.only(left: 50, top: 480),
             child: ElevatedButton(
-              onPressed: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => LoginPage()));
-              },
+              onPressed: () {},
               style: ButtonStyle(
                   backgroundColor:
                       MaterialStateProperty.all(Color.fromARGB(255, 6, 38, 64)),
@@ -155,7 +108,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   )),
               child: Text(
-                'Log In',
+                'Send recovery mail ',
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 15.0,
@@ -164,23 +117,14 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(left: 70, top: 520),
-            child: Text(
-              'Dont have account ?',
-              style: TextStyle(
-                  color: Color.fromARGB(255, 36, 98, 149),
-                  fontWeight: FontWeight.bold),
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.only(left: 200, top: 516),
+            margin: EdgeInsets.only(left: 80, top: 530),
             child: TextButton(
               onPressed: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => SignUpPage()));
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => LoginPage()));
               },
               child: const Text(
-                'Sign In',
+                'Go back to login page >>',
                 style: TextStyle(
                     color: Color.fromARGB(255, 6, 38, 64),
                     fontWeight: FontWeight.bold),
