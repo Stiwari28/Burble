@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "240900681005",
+    "project_id": "burble-d2e8a",
+    "storage_bucket": "burble-d2e8a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:240900681005:android:d52c5f6e58b80d4dddf7a4",
+        "android_client_info": {
+          "package_name": "com.example.burble"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "240900681005-gsja130uvier6p8hatrc7em0e9e0c7c6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.burble",
+            "certificate_hash": "8603f5e7fa215f4dc79029012285a0218e1c6da7"
+          }
+        },
+        {
+          "client_id": "240900681005-2a9e3udek47kgn2vrq4hkkqduge77hdh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2HozlLW8Ep-qL42ePqq7-Ws2LrMiQSZw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "240900681005-2a9e3udek47kgn2vrq4hkkqduge77hdh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

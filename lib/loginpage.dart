@@ -1,3 +1,4 @@
+import 'package:burble/HomePage.dart';
 import 'package:burble/signuppage.dart';
 import 'package:burble/welcomepage.dart';
 import 'package:flutter/material.dart';
@@ -42,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(left: 20, top: 20),
+            margin: EdgeInsets.only(left: 20, top: 30),
             child: FloatingActionButton(
               mini: true,
               onPressed: () {
@@ -55,7 +56,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(left: 10, top: 320),
+            margin: EdgeInsets.only(left: 10, top: 360),
             padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
             child: TextField(
               controller: nameController,
@@ -93,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(left: 10, top: 380),
+            margin: EdgeInsets.only(left: 10, top: 420),
             padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
             child: TextField(
               obscureText: true,
@@ -122,7 +123,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(left: 200, top: 440),
+            margin: EdgeInsets.only(left: 200, top: 480),
             child: TextButton(
               onPressed: () {
                 Navigator.of(context).push(
@@ -137,11 +138,11 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(left: 50, top: 480),
+            margin: EdgeInsets.only(left: 50, top: 540),
             child: ElevatedButton(
               onPressed: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => LoginPage()));
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => MyHomePage()));
               },
               style: ButtonStyle(
                   backgroundColor:
@@ -164,7 +165,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(left: 70, top: 520),
+            margin: EdgeInsets.only(left: 70, top: 620),
             child: Text(
               'Dont have account ?',
               style: TextStyle(
@@ -173,7 +174,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(left: 200, top: 516),
+            margin: EdgeInsets.only(left: 200, top: 605),
             child: TextButton(
               onPressed: () {
                 Navigator.of(context).push(

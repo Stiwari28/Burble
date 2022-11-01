@@ -1,4 +1,6 @@
+import 'package:burble/HomePage.dart';
 import 'package:burble/welcomePage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'loginpage.dart';
@@ -59,7 +61,7 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(left: 20, top: 20),
+            margin: EdgeInsets.only(left: 20, top: 30),
             child: FloatingActionButton(
               mini: true,
               onPressed: () {
@@ -72,7 +74,7 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(left: 10, top: 290),
+            margin: EdgeInsets.only(left: 10, top: 320),
             padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
             child: TextField(
               controller: nameController,
@@ -110,7 +112,7 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(left: 10, top: 340),
+            margin: EdgeInsets.only(left: 10, top: 380),
             padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
             child: TextField(
               controller: emailController,
@@ -148,7 +150,7 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(left: 10, top: 400),
+            margin: EdgeInsets.only(left: 10, top: 440),
             padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
             child: TextField(
               controller: phoneController,
@@ -186,7 +188,7 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(left: 10, top: 460),
+            margin: EdgeInsets.only(left: 10, top: 500),
             padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
             child: TextField(
               obscureText: true,
@@ -216,11 +218,20 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(left: 50, top: 550),
+            margin: EdgeInsets.only(left: 50, top: 600),
             child: ElevatedButton(
               onPressed: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => LoginPage()));
+                FirebaseAuth.instance
+                    .createUserWithEmailAndPassword(
+                        email: emailController.text,
+                        password: passwordController.text)
+                    .then((value) {
+                  print("Created New Account");
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => MyHomePage()));
+                }).onError((error, stackTrace) {
+                  print("Error ${error.toString()}");
+                });
               },
               style: ButtonStyle(
                   backgroundColor:
@@ -243,7 +254,7 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(left: 70, top: 600),
+            margin: EdgeInsets.only(left: 70, top: 670),
             child: Text(
               'Already have account ?',
               style: TextStyle(
@@ -252,7 +263,7 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(left: 220, top: 596),
+            margin: EdgeInsets.only(left: 220, top: 655),
             child: TextButton(
               onPressed: () {
                 Navigator.of(context)
