@@ -1,6 +1,7 @@
 import 'package:burble/HomePage.dart';
 import 'package:burble/signuppage.dart';
 import 'package:burble/welcomepage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'forgetPasswordPage.dart';
@@ -13,12 +14,12 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  TextEditingController nameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
 
   void _clearTextField() {
     // Clear everything in the text field
-    nameController.clear();
+    _emailController.clear();
     // Call setState to update the UI
     setState(() {});
   }
@@ -35,7 +36,7 @@ class _LoginPageState extends State<LoginPage> {
           Container(
             padding: EdgeInsets.only(left: 20, top: 150),
             child: Text(
-              'Create \nAccount',
+              'Welcome \nBack',
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 30,
@@ -59,7 +60,7 @@ class _LoginPageState extends State<LoginPage> {
             margin: EdgeInsets.only(left: 10, top: 360),
             padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
             child: TextField(
-              controller: nameController,
+              controller: _emailController,
               onChanged: (value) {
                 // Call setState to update the UI
                 setState(() {});
@@ -70,7 +71,7 @@ class _LoginPageState extends State<LoginPage> {
                   Icons.person,
                   color: Color.fromARGB(255, 10, 55, 93),
                 ),
-                suffixIcon: nameController.text.isEmpty
+                suffixIcon: _emailController.text.isEmpty
                     ? null // Show nothing if the text field is empty
                     : IconButton(
                         icon: const Icon(Icons.clear),
@@ -86,7 +87,7 @@ class _LoginPageState extends State<LoginPage> {
                   borderSide: BorderSide(
                       width: 2, color: Color.fromARGB(255, 6, 38, 64)),
                 ),
-                labelText: 'User Name',
+                labelText: 'Email',
                 labelStyle: TextStyle(
                   color: Color.fromARGB(255, 6, 38, 64),
                 ),
@@ -98,7 +99,7 @@ class _LoginPageState extends State<LoginPage> {
             padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
             child: TextField(
               obscureText: true,
-              controller: passwordController,
+              controller: _passwordController,
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.fromLTRB(0, 5, 10, 5),
                 prefixIcon: Icon(
@@ -141,8 +142,17 @@ class _LoginPageState extends State<LoginPage> {
             margin: EdgeInsets.only(left: 50, top: 540),
             child: ElevatedButton(
               onPressed: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => MyHomePage()));
+                FirebaseAuth.instance
+                    .signInWithEmailAndPassword(
+                        email: _emailController.text,
+                        password: _passwordController.text)
+                    .then((value) {
+                  print("Logged In");
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => MyHomePage()));
+                }).onError((error, stackTrace) {
+                  print("Error ${error.toString()}");
+                });
               },
               style: ButtonStyle(
                   backgroundColor:

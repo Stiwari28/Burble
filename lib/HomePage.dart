@@ -87,7 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   }),
               ListTile(
                   leading: const Icon(Icons.mode_comment_rounded),
-                  title: const Text('About Us'),
+                  title: const Text('App Info'),
                   onTap: () {
                     Navigator.pop(context);
                     showDialog(
@@ -113,7 +113,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget _buildPopupDialog(BuildContext context) {
     return new AlertDialog(
-      title: const Text('About Octopi'),
+      title: const Text('App Info'),
       content: new Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
