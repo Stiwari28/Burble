@@ -20,10 +20,6 @@ class MyApp extends StatelessWidget {
     var materialApp = MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Octopi',
-      theme: ThemeData(
-        fontFamily: 'UbuntuMono',
-        primarySwatch: Colors.indigo,
-      ),
     );
     return materialApp;
   }
@@ -40,6 +36,18 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
+          backgroundColor: Color.fromARGB(255, 10, 55, 93),
+          actions: [
+            IconButton(
+              onPressed: () {
+                showSearch(
+                  context: context,
+                  delegate: CustomSearchDelegate(),
+                );
+              },
+              icon: const Icon(Icons.search),
+            ),
+          ],
         ),
         drawer: Drawer(
           child: ListView(
@@ -129,7 +137,12 @@ class _MyHomePageState extends State<MyHomePage> {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: const Text('Close'),
+          child: const Text(
+            'Close',
+            style: TextStyle(
+                color: Color.fromARGB(255, 10, 55, 93),
+                fontWeight: FontWeight.bold),
+          ),
         ),
       ],
     );
@@ -153,7 +166,12 @@ class _MyHomePageState extends State<MyHomePage> {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: const Text('Close'),
+          child: const Text(
+            'Close',
+            style: TextStyle(
+                color: Color.fromARGB(255, 10, 55, 93),
+                fontWeight: FontWeight.bold),
+          ),
         ),
       ],
     );
@@ -162,7 +180,77 @@ class _MyHomePageState extends State<MyHomePage> {
 
 //----------------------------------------------------Search Icon Content---------------------------------------//
 
+class CustomSearchDelegate extends SearchDelegate {
+  List<String> searchTerms = [
+    'Apple',
+    'banana',
+    'mango',
+    'pear',
+    'blueberries',
+    'Strawberries',
+  ];
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return [
+      IconButton(
+        icon: const Icon(Icons.clear),
+        onPressed: () {
+          query = '';
+        },
+      ),
+    ];
+  }
 
+  @override
+  Widget buildLeading(BuildContext context) {
+    return IconButton(
+      icon: const Icon(Icons.arrow_back),
+      onPressed: () {
+        close(context, null);
+      },
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    List<String> matchQuery = [];
+    for (var fruit in searchTerms) {
+      if (fruit.toLowerCase().contains(query.toLowerCase())) {
+        matchQuery.add(fruit);
+      }
+    }
+    return ListView.builder(
+      itemCount: matchQuery.length,
+      itemBuilder: (context, index) {
+        var result = matchQuery[index];
+        return ListTile(
+          title: Text(result),
+        );
+      },
+    );
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    List<String> matchQuery = [];
+    for (var fruit in searchTerms) {
+      if (fruit.toLowerCase().contains(query.toLowerCase())) {
+        matchQuery.add(fruit);
+      }
+    }
+    return ListView.builder(
+      itemCount: matchQuery.length,
+      itemBuilder: (context, index) {
+        var result = matchQuery[index];
+        return ListTile(
+          title: Text(result),
+        );
+      },
+    );
+  }
+}
+
+//------------------------------------------gridScreen---------------------------------//
   
 
   
