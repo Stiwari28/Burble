@@ -1,10 +1,11 @@
 import 'package:burble/HomePage.dart';
 import 'package:burble/signuppage.dart';
 import 'package:burble/welcomepage.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 
 import 'forgetPasswordPage.dart';
+import 'methods.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key? key}) : super(key: key);
@@ -14,12 +15,13 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  TextEditingController _email = TextEditingController();
+  TextEditingController _password = TextEditingController();
+  bool isLoading = false;
 
   void _clearTextField() {
     // Clear everything in the text field
-    _emailController.clear();
+    _email.clear();
     // Call setState to update the UI
     setState(() {});
   }
@@ -60,7 +62,7 @@ class _LoginPageState extends State<LoginPage> {
             margin: EdgeInsets.only(left: 10, top: 360),
             padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
             child: TextField(
-              controller: _emailController,
+              controller: _email,
               onChanged: (value) {
                 // Call setState to update the UI
                 setState(() {});
@@ -71,7 +73,7 @@ class _LoginPageState extends State<LoginPage> {
                   Icons.person,
                   color: Color.fromARGB(255, 10, 55, 93),
                 ),
-                suffixIcon: _emailController.text.isEmpty
+                suffixIcon: _email.text.isEmpty
                     ? null // Show nothing if the text field is empty
                     : IconButton(
                         icon: const Icon(Icons.clear),
@@ -99,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
             padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
             child: TextField(
               obscureText: true,
-              controller: _passwordController,
+              controller: _password,
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.fromLTRB(0, 5, 10, 5),
                 prefixIcon: Icon(
@@ -142,17 +144,29 @@ class _LoginPageState extends State<LoginPage> {
             margin: EdgeInsets.only(left: 50, top: 540),
             child: ElevatedButton(
               onPressed: () {
-                FirebaseAuth.instance
-                    .signInWithEmailAndPassword(
-                        email: _emailController.text,
-                        password: _passwordController.text)
-                    .then((value) {
-                  print("Logged In");
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => MyHomePage()));
-                }).onError((error, stackTrace) {
-                  print("Error ${error.toString()}");
-                });
+                if (_email.text.isNotEmpty && _password.text.isNotEmpty) {
+                  setState(() {
+                    isLoading = true;
+                  });
+
+                  logIn(_email.text, _password.text).then((user) {
+                    if (user != null) {
+                      print("Login Sucessfull");
+                      setState(() {
+                        isLoading = false;
+                      });
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (_) => MyHomePage()));
+                    } else {
+                      print("Login Failed");
+                      setState(() {
+                        isLoading = false;
+                      });
+                    }
+                  });
+                } else {
+                  print("Please fill form correctly");
+                }
               },
               style: ButtonStyle(
                   backgroundColor:

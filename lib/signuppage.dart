@@ -1,6 +1,7 @@
 import 'package:burble/HomePage.dart';
+import 'package:burble/methods.dart';
 import 'package:burble/welcomePage.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 
 import 'loginpage.dart';
@@ -13,14 +14,15 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  TextEditingController nameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  TextEditingController _name = TextEditingController();
+  TextEditingController _password = TextEditingController();
   TextEditingController phoneController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
+  TextEditingController _email = TextEditingController();
+  bool isLoading = false;
   //-------------------------------//
   void _clearTextField() {
     // Clear everything in the text field
-    nameController.clear();
+    _name.clear();
     // Call setState to update the UI
     setState(() {});
   }
@@ -28,7 +30,7 @@ class _SignUpPageState extends State<SignUpPage> {
   //-----------------------------------//
   void _clearEmailField() {
     // Clear everything in the text field
-    emailController.clear();
+    _email.clear();
     // Call setState to update the UI
     setState(() {});
   }
@@ -77,7 +79,7 @@ class _SignUpPageState extends State<SignUpPage> {
             margin: EdgeInsets.only(left: 10, top: 320),
             padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
             child: TextField(
-              controller: nameController,
+              controller: _name,
               onChanged: (value) {
                 // Call setState to update the UI
                 setState(() {});
@@ -88,7 +90,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   Icons.person,
                   color: Color.fromARGB(255, 10, 55, 93),
                 ),
-                suffixIcon: nameController.text.isEmpty
+                suffixIcon: _name.text.isEmpty
                     ? null // Show nothing if the text field is empty
                     : IconButton(
                         icon: const Icon(Icons.clear),
@@ -115,7 +117,7 @@ class _SignUpPageState extends State<SignUpPage> {
             margin: EdgeInsets.only(left: 10, top: 380),
             padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
             child: TextField(
-              controller: emailController,
+              controller: _email,
               onChanged: (value) {
                 // Call setState to update the UI
                 setState(() {});
@@ -126,7 +128,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   Icons.email,
                   color: Color.fromARGB(255, 10, 55, 93),
                 ),
-                suffixIcon: emailController.text.isEmpty
+                suffixIcon: _email.text.isEmpty
                     ? null // Show nothing if the text field is empty
                     : IconButton(
                         icon: const Icon(Icons.clear),
@@ -192,7 +194,7 @@ class _SignUpPageState extends State<SignUpPage> {
             padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
             child: TextField(
               obscureText: true,
-              controller: passwordController,
+              controller: _password,
               decoration: const InputDecoration(
                 contentPadding: EdgeInsets.fromLTRB(0, 5, 10, 5),
                 prefixIcon: Icon(
@@ -221,17 +223,32 @@ class _SignUpPageState extends State<SignUpPage> {
             margin: EdgeInsets.only(left: 50, top: 600),
             child: ElevatedButton(
               onPressed: () {
-                FirebaseAuth.instance
-                    .createUserWithEmailAndPassword(
-                        email: emailController.text,
-                        password: passwordController.text)
-                    .then((value) {
-                  print("Created New Account");
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => MyHomePage()));
-                }).onError((error, stackTrace) {
-                  print("Error ${error.toString()}");
-                });
+                if (_name.text.isNotEmpty &&
+                    _email.text.isNotEmpty &&
+                    _password.text.isNotEmpty) {
+                  setState(() {
+                    isLoading = true;
+                  });
+
+                  createAccount(_name.text, _email.text, _password.text)
+                      .then((user) {
+                    if (user != null) {
+                      setState(() {
+                        isLoading = false;
+                      });
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (_) => MyHomePage()));
+                      print("Account Created Successful");
+                    } else {
+                      print("Login Failed");
+                      setState(() {
+                        isLoading = false;
+                      });
+                    }
+                  });
+                } else {
+                  print("Please enter Fields");
+                }
               },
               style: ButtonStyle(
                   backgroundColor:
