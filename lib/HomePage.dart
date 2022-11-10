@@ -1,4 +1,4 @@
-// ignore_for_file: unused_local_variable, unused_import
+// ignore_for_file: unused_local_variable, unused_import, unused_field, override_on_non_overriding_member
 
 import 'package:burble/ProfilePage.dart';
 import 'package:burble/loginpage.dart';
@@ -7,6 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'chatRoom.dart';
 
 void main() {
   runApp(const MyApp());
@@ -31,30 +32,147 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
+  Map<String, dynamic>? userMap;
   bool isLoading = false;
   final TextEditingController _search = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    setStatus("Online");
+  }
+
+  void setStatus(String status) async {
+    await _firestore.collection('users').doc(_auth.currentUser!.uid).update({
+      "status": status,
+    });
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      // online
+      setStatus("Online");
+    } else {
+      // offline
+      setStatus("Offline");
+    }
+  }
+
+  String chatRoomId(String user1, String user2) {
+    if (user1[0].toLowerCase().codeUnits[0] >
+        user2.toLowerCase().codeUnits[0]) {
+      return "$user1$user2";
+    } else {
+      return "$user2$user1";
+    }
+  }
+
+  @override
+  void onSearch() async {
+    FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+    setState(() {
+      isLoading = true;
+    });
+
+    await _firestore
+        .collection('users')
+        .where("email", isEqualTo: _search.text)
+        .get()
+        .then((value) {
+      setState(() {
+        userMap = value.docs[0].data();
+        isLoading = false;
+      });
+      print(userMap);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
           backgroundColor: Color.fromARGB(255, 10, 55, 93),
-          actions: [
-            IconButton(
-              onPressed: () {
-                showSearch(
-                  context: context,
-                  delegate: CustomSearchDelegate(),
-                );
-              },
-              icon: const Icon(Icons.search),
-            ),
-          ],
         ),
+        body: isLoading
+            ? Center(
+                child: Container(
+                  height: size.height / 20,
+                  width: size.height / 20,
+                  child: CircularProgressIndicator(),
+                ),
+              )
+            : Column(
+                children: [
+                  SizedBox(
+                    height: size.height / 20,
+                  ),
+                  Container(
+                    height: size.height / 14,
+                    width: size.width,
+                    alignment: Alignment.center,
+                    child: Container(
+                      height: size.height / 14,
+                      width: size.width / 1.15,
+                      child: TextField(
+                        controller: _search,
+                        decoration: InputDecoration(
+                          hintText: "Search",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: size.height / 50,
+                  ),
+                  ElevatedButton(
+                    onPressed: onSearch,
+                    child: Text("Search"),
+                  ),
+                  SizedBox(
+                    height: size.height / 30,
+                  ),
+                  userMap != null
+                      ? ListTile(
+                          onTap: () {
+                            String roomId = chatRoomId(
+                                _auth.currentUser!.displayName!,
+                                userMap!['name']);
+
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) => ChatRoom(
+                                  chatRoomId: roomId,
+                                  userMap: userMap!,
+                                ),
+                              ),
+                            );
+                          },
+                          leading: Icon(Icons.account_box, color: Colors.black),
+                          title: Text(
+                            userMap!['name'],
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 17,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          subtitle: Text(userMap!['email']),
+                          trailing: Icon(Icons.chat, color: Colors.black),
+                        )
+                      : Container(),
+                ],
+              ),
         drawer: Drawer(
           child: ListView(
             padding: EdgeInsets.zero,
@@ -185,79 +303,4 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 //----------------------------------------------------Search Icon Content---------------------------------------//
-
-class CustomSearchDelegate extends SearchDelegate {
-  List<String> searchTerms = [
-    'Apple',
-    'banana',
-    'mango',
-    'pear',
-    'blueberries',
-    'Strawberries',
-  ];
-  @override
-  List<Widget> buildActions(BuildContext context) {
-    return [
-      IconButton(
-        icon: const Icon(Icons.clear),
-        onPressed: () {
-          query = '';
-        },
-      ),
-    ];
-  }
-
-  @override
-  Widget buildLeading(BuildContext context) {
-    return IconButton(
-      icon: const Icon(Icons.arrow_back),
-      onPressed: () {
-        close(context, null);
-      },
-    );
-  }
-
-  @override
-  Widget buildResults(BuildContext context) {
-    List<String> matchQuery = [];
-    for (var fruit in searchTerms) {
-      if (fruit.toLowerCase().contains(query.toLowerCase())) {
-        matchQuery.add(fruit);
-      }
-    }
-    return ListView.builder(
-      itemCount: matchQuery.length,
-      itemBuilder: (context, index) {
-        var result = matchQuery[index];
-        return ListTile(
-          title: Text(result),
-        );
-      },
-    );
-  }
-
-  @override
-  Widget buildSuggestions(BuildContext context) {
-    List<String> matchQuery = [];
-    for (var fruit in searchTerms) {
-      if (fruit.toLowerCase().contains(query.toLowerCase())) {
-        matchQuery.add(fruit);
-      }
-    }
-    return ListView.builder(
-      itemCount: matchQuery.length,
-      itemBuilder: (context, index) {
-        var result = matchQuery[index];
-        return ListTile(
-          title: Text(result),
-        );
-      },
-    );
-  }
-}
-
-//------------------------------------------gridScreen---------------------------------//
-  
-
-  
 

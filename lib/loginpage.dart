@@ -151,7 +151,7 @@ class _LoginPageState extends State<LoginPage> {
 
                   logIn(_email.text, _password.text).then((user) {
                     if (user != null) {
-                      print("Login Sucessfull");
+                      print("Login Successful");
                       setState(() {
                         isLoading = false;
                       });
