@@ -124,11 +124,15 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                       child: TextField(
                         controller: _search,
                         decoration: InputDecoration(
-                          hintText: "Search",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
+                            hintText: "Search",
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  width: 2,
+                                  color: Color.fromARGB(255, 6, 38, 64)),
+                            )),
                       ),
                     ),
                   ),
@@ -137,7 +141,26 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                   ),
                   ElevatedButton(
                     onPressed: onSearch,
-                    child: Text("Search"),
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(
+                            Color.fromARGB(255, 6, 38, 64)),
+                        padding:
+                            MaterialStateProperty.all(const EdgeInsets.all(10)),
+                        elevation: MaterialStateProperty.all(15),
+                        minimumSize:
+                            MaterialStateProperty.all(const Size(150, 40)),
+                        shape: MaterialStateProperty.all(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                        )),
+                    child: Text(
+                      "Search",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15.0,
+                          fontWeight: FontWeight.bold),
+                    ),
                   ),
                   SizedBox(
                     height: size.height / 30,
@@ -158,7 +181,10 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                               ),
                             );
                           },
-                          leading: Icon(Icons.account_box, color: Colors.black),
+                          leading: Icon(
+                            Icons.account_box,
+                            color: Color.fromARGB(255, 6, 38, 64),
+                          ),
                           title: Text(
                             userMap!['name'],
                             style: TextStyle(
@@ -168,7 +194,10 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                             ),
                           ),
                           subtitle: Text(userMap!['email']),
-                          trailing: Icon(Icons.chat, color: Colors.black),
+                          trailing: Icon(
+                            Icons.chat,
+                            color: Color.fromARGB(255, 6, 38, 64),
+                          ),
                         )
                       : Container(),
                 ],
@@ -185,7 +214,10 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                     style: TextStyle(color: Colors.white, fontSize: 50)),
               ),
               ListTile(
-                  leading: const Icon(Icons.girl),
+                  leading: const Icon(
+                    Icons.girl,
+                    color: Color.fromARGB(255, 6, 38, 64),
+                  ),
                   title: const Text('Profile'),
                   onTap: () {
                     var push = Navigator.push(
@@ -195,7 +227,10 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                         ));
                   }),
               ListTile(
-                  leading: const Icon(Icons.settings),
+                  leading: const Icon(
+                    Icons.settings,
+                    color: Color.fromARGB(255, 6, 38, 64),
+                  ),
                   title: const Text('Setting'),
                   onTap: () {
                     var push = Navigator.push(
@@ -205,7 +240,10 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                         ));
                   }),
               ListTile(
-                  leading: const Icon(Icons.logout),
+                  leading: const Icon(
+                    Icons.logout,
+                    color: Color.fromARGB(255, 6, 38, 64),
+                  ),
                   title: const Text('Logout'),
                   onTap: () {
                     FirebaseAuth.instance.signOut().then((value) {
@@ -218,7 +256,10 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                     });
                   }),
               ListTile(
-                  leading: const Icon(Icons.mode_comment_rounded),
+                  leading: const Icon(
+                    Icons.mode_comment_rounded,
+                    color: Color.fromARGB(255, 6, 38, 64),
+                  ),
                   title: const Text('App Info'),
                   onTap: () {
                     Navigator.pop(context);
@@ -229,7 +270,10 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                     );
                   }),
               ListTile(
-                  leading: const Icon(Icons.mode_edit_outline_rounded),
+                  leading: const Icon(
+                    Icons.mode_edit_outline_rounded,
+                    color: Color.fromARGB(255, 6, 38, 64),
+                  ),
                   title: const Text('Send Feedback'),
                   onTap: () {
                     Navigator.pop(context);

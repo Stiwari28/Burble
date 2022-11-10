@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -100,6 +102,7 @@ class ChatRoom extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color.fromARGB(255, 10, 55, 93),
         title: StreamBuilder<DocumentSnapshot>(
           stream:
               _firestore.collection("users").doc(userMap['uid']).snapshots(),
@@ -170,16 +173,28 @@ class ChatRoom extends StatelessWidget {
                         decoration: InputDecoration(
                             suffixIcon: IconButton(
                               onPressed: () => getImage(),
-                              icon: Icon(Icons.photo),
+                              icon: Icon(
+                                Icons.photo,
+                                color: Color.fromARGB(255, 6, 38, 64),
+                              ),
                             ),
                             hintText: "Send Message",
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  width: 2,
+                                  color: Color.fromARGB(255, 6, 38, 64)),
                             )),
                       ),
                     ),
                     IconButton(
-                        icon: Icon(Icons.send), onPressed: onSendMessage),
+                        icon: Icon(
+                          Icons.send,
+                          color: Color.fromARGB(255, 6, 38, 64),
+                        ),
+                        onPressed: onSendMessage),
                   ],
                 ),
               ),
@@ -202,7 +217,7 @@ class ChatRoom extends StatelessWidget {
               margin: EdgeInsets.symmetric(vertical: 5, horizontal: 8),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15),
-                color: Colors.blue,
+                color: Color.fromARGB(255, 10, 55, 93),
               ),
               child: Text(
                 map['message'],
